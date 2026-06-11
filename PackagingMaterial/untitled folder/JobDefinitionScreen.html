@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexible Packaging - Intuitive Job Definer</title>
+    <style>
+        :root {
+            --bg-main: #f5f6fa;
+            --bg-card: #ffffff;
+            --text-primary: #2f3640;
+            --text-secondary: #718093;
+            --border-color: #dcdde1;
+            --primary-color: #273c75;
+            --accent-color: #00a8ff;
+            --print-color: #8c7ae6;
+            --lam-color: #e1b12c;
+            --slit-color: #4cd137;
+            --pouch-color: #e84118;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .header-title h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .header-title span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        button {
+            padding: 8px 14px;
+            border-radius: 4px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        button.btn-save {
+            background-color: #4cd137;
+            color: white;
+        }
+
+        button.btn-add {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.75rem;
+            padding: 5px 10px;
+        }
+
+        /* --- CORE TWO-COLUMN LAYOUT --- */
+        .main-workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* LEFT SIDEBAR: Pouch Profile & Master Sizes */
+        .spec-sidebar {
+            width: 320px;
+            background-color: #fff;
+            border-right: 1px solid var(--border-color);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--bg-main);
+            padding-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .input-grid.triple {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .form-element {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .form-element label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            background-color: #fcfcfc;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background-color: #fff;
+        }
+
+        /* RIGHT CONTAINER: The Workflow Routing Builder */
+        .builder-space {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Action Bar to Append Nodes */
+        .builder-toolbox {
+            background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .toolbox-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .tool-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .t-print {
+            background-color: var(--print-color);
+        }
+
+        .t-lam {
+            background-color: var(--lam-color);
+        }
+
+        .t-slit {
+            background-color: var(--slit-color);
+        }
+
+        .t-pouch {
+            background-color: var(--pouch-color);
+        }
+
+        /* Flow Canvas Container */
+        .flow-canvas {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            /* Center cards like a real process map */
+        }
+
+        /* PROCESS CARDS (THE NODES) */
+        .process-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-header {
+            padding: 8px 15px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .remove-node {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .remove-node:hover {
+            opacity: 1;
+        }
+
+        /* Card context variations */
+        .c-print .card-header {
+            background-color: var(--print-color);
+        }
+
+        .c-lam .card-header {
+            background-color: var(--lam-color);
+        }
+
+        .c-slit .card-header {
+            background-color: var(--slit-color);
+        }
+
+        .c-pouch .card-header {
+            background-color: var(--pouch-color);
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        /* Direct Layout configurations inside card grids */
+        .inline-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+
+        /* Flow Connector Arrow styling */
+        .flow-arrow {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            line-height: 1;
+            user-select: none;
+        }
+
+        /* Dynamic mini table for Ink Matrix / Components */
+        .mini-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.75rem;
+        }
+
+        .mini-matrix th {
+            background: var(--bg-main);
+            padding: 4px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .mini-matrix td {
+            border: 1px solid var(--border-color);
+            padding: 3px;
+        }
+
+        .mini-matrix input {
+            border: none;
+            padding: 2px;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-title">
+            <h1>Intuitive Product Configurator</h1>
+            <span>Map out raw materials, film layers, and production routing seamlessly</span>
+        </div>
+        <div>
+            <button class="btn-save" onclick="alert('Specification saved and pushed to ERP database!')">Save & Generate
+                Job Sheet</button>
+        </div>
+    </header>
+
+    <div class="main-workspace">
+
+        <aside class="spec-sidebar">
+            <div class="form-element">
+                <label>Target Customer</label>
+                <input type="text" placeholder="e.g. Roasters Alliance" value="Roasters Alliance Ltd">
+            </div>
+
+            <div class="form-element">
+                <label>Product Packaging Name</label>
+                <input type="text" placeholder="e.g. 250g Standup Pouch" value="Premium Arabica Foil Bag">
+            </div>
+
+            <div class="input-grid">
+                <div class="form-element">
+                    <label>Product Type</label>
+                    <select>
+                        <option>Stand-up Pouch</option>
+                        <option>Center Seal Bag</option>
+                        <option>Three Side Seal</option>
+                        <option>Roll Stock Only</option>
+                    </select>
+                </div>
+                <div class="form-element">
+                    <label>Target Run Qty</label>
+                    <input type="number" value="50000">
+                </div>
+            </div>
+
+            <div class="section-title" style="margin-top:10px;">Bag Geometry Sizes</div>
+
+            <div class="input-grid triple">
+                <div class="form-element"><label>Closed W (mm)</label><input type="number" value="150"></div>
+                <div class="form-element"><label>Closed L (mm)</label><input type="number" value="230"></div>
+                <div class="form-element"><label>Gusset (mm)</label><input type="number" value="40"></div>
+            </div>
+
+            <div class="input-grid">
+                <div class="form-element"><label>Total Open Width (W)</label><input type="number" value="300"></div>
+                <div class="form-element"><label>Total Open Length (L)</label><input type="number" value="230"></div>
+            </div>
+
+            <div class="input-grid">
+                <div class="form-element"><label>Ups from Web Width</label><input type="number" value="3"></div>
+                <div class="form-element"><label>Cylinder Pitch (mm)</label><input type="number" value="235"></div>
+            </div>
+
+            <div class="section-title" style="margin-top:auto;">Live Structural Context</div>
+            <div class="input-grid" style="background: var(--bg-main); padding: 8px; border-radius: 4px;">
+                <div style="font-size: 0.75rem;">Total Layers: <strong id="layer-count-badge">3 Layers</strong></div>
+                <div style="font-size: 0.75rem; text-align: right;">Est Thickness: <strong>74 µ</strong></div>
+            </div>
+        </aside>
+
+        <div class="builder-space">
+
+            <div class="builder-toolbox">
+                <span class="toolbox-label">Click to Append Next Plant Process:</span>
+                <button class="tool-btn t-print" onclick="addProcess('print')">+ Printing Layer (Face)</button>
+                <button class="tool-btn t-lam" onclick="addProcess('lam')">+ Lamination Bond</button>
+                <button class="tool-btn t-slit" onclick="addProcess('slit')">+ Slitting Operation</button>
+                <button class="tool-btn t-pouch" onclick="addProcess('pouch')">+ Pouch Conversion</button>
+            </div>
+
+            <div class="flow-canvas" id="workflow-canvas">
+
+                <div class="process-card c-print" id="node-1">
+                    <div class="card-header">
+                        <h3>Step 1: Printing Process (Layer 1 - Outermost Film)</h3>
+                        <span class="remove-node" onclick="removeNode('node-1')">&times;</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="inline-fields">
+                            <div class="form-element">
+                                <label>Target Workcenter Machine</label>
+                                <select>
+                                    <option>Rotogravure HighSpeed 01</option>
+                                    <option>Flexo CI 02</option>
+                                </select>
+                            </div>
+                            <div class="form-element"><label>Base Material</label><select>
+                                    <option>BOPP Plain Matte</option>
+                                    <option>PET Polyester</option>
+                                </select></div>
+                            <div class="form-element"><label>Thickness (µ)</label><input type="number" value="12"></div>
+                            <div class="form-element"><label>Density</label><input type="number" value="0.96"
+                                    step="0.01"></div>
+                            <div class="form-element"><label>Film Cut Width (mm)</label><input type="number"
+                                    value="920"></div>
+                        </div>
+
+                        <table class="mini-matrix">
+                            <thead>
+                                <tr>
+                                    <th>Color Count Front / Back</th>
+                                    <th>Ink GSM Formula</th>
+                                    <th>Solvent Thinner Base Ratio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>F: <input type="number" value="6" style="width:30px;"> B: <input type="number"
+                                            value="0" style="width:30px;"></td>
+                                    <td><input type="number" value="1.5" step="0.1" style="width:60px;"> GSM</td>
+                                    <td><input type="text" value="Ethyl Acetate / Toluene Mix (70:30)"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flow-arrow" id="arrow-1">➔</div>
+
+                <div class="process-card c-lam" id="node-2">
+                    <div class="card-header">
+                        <h3>Step 2: Lamination Bonding (Layer 1 ➔ Layer 2 Contact)</h3>
+                        <span class="remove-node" onclick="removeNode('node-2')">&times;</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="inline-fields">
+                            <div class="form-element">
+                                <label>Laminator Workcenter</label>
+                                <select>
+                                    <option>Nordmeccanica Solventless 01</option>
+                                    <option>Comexi Solvent Base</option>
+                                </select>
+                            </div>
+                            <div class="form-element"><label>Adhesive Chemistry</label><select>
+                                    <option>Polyurethane (PU) Two-Part</option>
+                                    <option>Solventless Acrylic</option>
+                                </select></div>
+                            <div class="form-element"><label>Target Coating dry (GSM)</label><input type="number"
+                                    value="2.5" step="0.1"></div>
+                            <div class="form-element"><label>Catalyst / Hardener Ratio</label><input type="text"
+                                    value="100:15"></div>
+                            <div class="form-element"><label>Core Film Layer 2 Material</label><select>
+                                    <option>MET-PET Barrier</option>
+                                    <option>Pure Aluminum Foil</option>
+                                </select></div>
+                            <div class="form-element"><label>Core Thick (µ)</label><input type="number" value="12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow" id="arrow-2">➔</div>
+
+                <div class="process-card c-slit" id="node-3">
+                    <div class="card-header">
+                        <h3>Step 3: Slitting & Rewinding Operation</h3>
+                        <span class="remove-node" onclick="removeNode('node-3')">&times;</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="inline-fields">
+                            <div class="form-element">
+                                <label>Slitter Workcenter Machine</label>
+                                <select>
+                                    <option>Kampf HighSpeed Slitter</option>
+                                    <option>Secondary Rewinder 04</option>
+                                </select>
+                            </div>
+                            <div class="form-element"><label>Target Output Slit Width (mm)</label><input type="number"
+                                    value="310"></div>
+                            <div class="form-element"><label>No. of Active Rotary Knives</label><input type="number"
+                                    value="3"></div>
+                            <div class="form-element"><label>Edge Trim Scrap Allowance (%)</label><input type="number"
+                                    value="1.5" step="0.1"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stepCount = 3;
+
+        function addProcess(type) {
+            stepCount++;
+            const canvas = document.getElementById('workflow-canvas');
+
+            // 1. Create and append structural connection arrow
+            const arrow = document.createElement('div');
+            arrow.className = 'flow-arrow';
+            arrow.id = `arrow-${stepCount}`;
+            arrow.innerHTML = '➔';
+            canvas.appendChild(arrow);
+
+            // 2. Build template block based on physical operational department chosen
+            const card = document.createElement('div');
+            card.className = `process-card c-${type}`;
+            card.id = `node-${stepCount}`;
+
+            let uniqueContent = '';
+            if (type === 'print') {
+                uniqueContent = `
+                    <div class="card-header"><h3>Step ${stepCount}: Additional Custom Printing / Coating Phase</h3><span class="remove-node" onclick="removeNode('node-${stepCount}')">&times;</span></div>
+                    <div class="card-body"><div class="inline-fields">
+                        <div class="form-element"><label>Workcenter</label><select><option>Rotogravure 02</option></select></div>
+                        <div class="form-element"><label>Material Coating</label><input type="text" value="Matte Overprint Varnish"></div>
+                        <div class="form-element"><label>Dry GSM Target</label><input type="number" value="1.2"></div>
+                    </div></div>`;
+            } else if (type === 'lam') {
+                uniqueContent = `
+                    <div class="card-header"><h3>Step ${stepCount}: Lamination Addition (Next Inner Layer Contact)</h3><span class="remove-node" onclick="removeNode('node-${stepCount}')">&times;</span></div>
+                    <div class="card-body"><div class="inline-fields">
+                        <div class="form-element"><label>Laminator Workcenter</label><select><option>Nordmeccanica Solventless 01</option></select></div>
+                        <div class="form-element"><label>Adhesive Mix</label><input type="text" value="Solventless 100:40"></div>
+                        <div class="form-element"><label>Substrate Film Layer</label><select><option>Natural LDPE Sealant</option><option>CPP Cast Polypropylene</option></select></div>
+                        <div class="form-element"><label>Substrate Thickness (µ)</label><input type="number" value="50"></div>
+                    </div></div>`;
+            } else if (type === 'slit') {
+                uniqueContent = `
+                    <div class="card-header"><h3>Step ${stepCount}: Slitting / Trimming Cut Process</h3><span class="remove-node" onclick="removeNode('node-${stepCount}')">&times;</span></div>
+                    <div class="card-body"><div class="inline-fields">
+                        <div class="form-element"><label>Slitter Workcenter</label><select><option>Kampf Slitter</option></select></div>
+                        <div class="form-element"><label>Slit Target (mm)</label><input type="number" value="150"></div>
+                    </div></div>`;
+            } else if (type === 'pouch') {
+                uniqueContent = `
+                    <div class="card-header"><h3>Step ${stepCount}: Pouch Conversion & Heat Sealing</h3><span class="remove-node" onclick="removeNode('node-${stepCount}')">&times;</span></div>
+                    <div class="card-body"><div class="inline-fields">
+                        <div class="form-element"><label>Pouching Line Workcenter</label><select><option>Totani Pouch Line 01</option><option>Mamata Sealer 03</option></select></div>
+                        <div class="form-element"><label>Zipper Assembly Profile</label><select><option>Press-To-Close</option><option>None</option></select></div>
+                        <div class="form-element"><label>Die Tool punch option</label><select><option>Euro Slot Tear Notch</option><option>Round Handle</option></select></div>
+                        <div class="form-element"><label>Seal Temp Target (°C)</label><input type="number" value="185"></div>
+                    </div></div>`;
+            }
+
+            card.innerHTML = uniqueContent;
+            canvas.appendChild(card);
+
+            // Auto scroll down to focus on newly appended process step node
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            updateSidebarStats();
+        }
+
+        function removeNode(nodeId) {
+            const node = document.getElementById(nodeId);
+            if (!node) return;
+
+            // Extract numerical index to eliminate its corresponding positional tracking arrow
+            const index = nodeId.split('-')[1];
+            const arrow = document.getElementById(`arrow-${index}`);
+
+            if (arrow) arrow.remove();
+            node.remove();
+            updateSidebarStats();
+        }
+
+        function updateSidebarStats() {
+            const currentCards = document.querySelectorAll('.process-card').length;
+            const lams = document.querySelectorAll('.c-lam').length;
+            // Approximate active layer counts via lamination count additions
+            document.getElementById('layer-count-badge').innerText = `${lams + 1} Structural Layers`;
+        }
+    </script>
+</body>
+
+</html>

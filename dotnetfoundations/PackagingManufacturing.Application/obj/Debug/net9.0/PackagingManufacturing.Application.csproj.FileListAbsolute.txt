@@ -1,0 +1,16 @@
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/PackagingManufacturing.Application.csproj.AssemblyReference.cache
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/PackagingManufacturing.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/PackagingManufacturing.Application.AssemblyInfoInputs.cache
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/PackagingManufacturing.Application.AssemblyInfo.cs
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/PackagingManufacturing.Application.csproj.CoreCompileInputs.cache
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/PackagingManufacturing.Application.sourcelink.json
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/bin/Debug/net9.0/PackagingManufacturing.Application.deps.json
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/bin/Debug/net9.0/PackagingManufacturing.Application.dll
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/bin/Debug/net9.0/PackagingManufacturing.Application.pdb
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/bin/Debug/net9.0/PackagingManufacturing.Domain.dll
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/bin/Debug/net9.0/PackagingManufacturing.Domain.pdb
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/Packagin.9A615C2D.Up2Date
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/PackagingManufacturing.Application.dll
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/refint/PackagingManufacturing.Application.dll
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/PackagingManufacturing.Application.pdb
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/obj/Debug/net9.0/ref/PackagingManufacturing.Application.dll

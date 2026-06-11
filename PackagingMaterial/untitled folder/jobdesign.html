@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexible Packaging - Shop Floor Product Configurator</title>
+    <style>
+        :root {
+            --bg-body: #f0f2f5;
+            --bg-surface: #ffffff;
+            --border: #dcdde1;
+            --text: #2f3640;
+            --text-muted: #718093;
+            --primary: #1e3799;
+            --accent: #00a8ff;
+
+            /* Industrial Stage Theme Colors */
+            --roto-color: #6c5ce7;
+            --lam-color: #f39c12;
+            --ext-color: #d35400;
+            --slit-color: #2ecc71;
+            --pouch-color: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- CONTROL BAR --- */
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .title-block h1 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .title-block p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-action {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* --- LAYOUT CONFIGURATION --- */
+        .workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* LEFT SIDEBAR: Rigid Bag Geometry Blueprint */
+        .geometry-sidebar {
+            width: 300px;
+            background: #fff;
+            border-right: 1px solid var(--border);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .side-heading {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 2px solid var(--bg-body);
+            padding-bottom: 3px;
+            margin-top: 5px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .field-row.triple {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .input-group label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            background: #fafafa;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #fff;
+        }
+
+        /* RIGHT WORKSPACE: Step-by-Step Flow Canvas */
+        .flow-builder {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Station Injector Tools */
+        .toolbox {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .toolbox span {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .add-btn {
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .b-roto {
+            background-color: var(--roto-color);
+        }
+
+        .b-lam {
+            background-color: var(--lam-color);
+        }
+
+        .b-ext {
+            background-color: var(--ext-color);
+        }
+
+        .b-slit {
+            background-color: var(--slit-color);
+        }
+
+        .b-pouch {
+            background-color: var(--pouch-color);
+        }
+
+        /* The Linear Assembly Pipeline Line */
+        .canvas {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        /* SPECIFIC WORKCENTER OPERATION CARDS */
+        .workcenter-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            width: 100%;
+            max-width: 850px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+        }
+
+        .card-banner {
+            padding: 6px 12px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-banner h3 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-banner .del-node {
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* Card Station Type Context Binding */
+        .wc-roto .card-banner {
+            background-color: var(--roto-color);
+        }
+
+        .wc-lam .card-banner {
+            background-color: var(--lam-color);
+        }
+
+        .wc-ext .card-banner {
+            background-color: var(--ext-color);
+        }
+
+        .wc-slit .card-banner {
+            background-color: var(--slit-color);
+        }
+
+        .wc-pouch .card-banner {
+            background-color: var(--pouch-color);
+        }
+
+        .card-payload {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .inline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 8px;
+        }
+
+        /* Deep Sub-Machine Asset Elements (e.g. Cylinders Matrix / Ink Stations) */
+        .asset-sub-grid {
+            background: var(--bg-body);
+            border: 1px dashed var(--border);
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 4px;
+        }
+
+        .asset-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Micro Spreadsheet Inputs for Asset Configurations */
+        .sub-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+            background: #fff;
+        }
+
+        .sub-table th {
+            background: #f1f2f6;
+            border: 1px solid var(--border);
+            padding: 4px;
+            text-align: left;
+            color: var(--text);
+        }
+
+        .sub-table td {
+            border: 1px solid var(--border);
+            padding: 2px;
+        }
+
+        .sub-table input {
+            border: none;
+            padding: 2px;
+            background: transparent;
+            width: 100%;
+        }
+
+        .line-arrow {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="title-block">
+            <h1>Industrial Product & Route Definer</h1>
+            <p>Construct engineering blueprints layer-by-layer, binding specific machine mechanics inline.</p>
+        </div>
+        <button class="btn-action" onclick="alert('Product blueprint successfully compiled into ERP database.')">Save
+            Technical Specifications</button>
+    </header>
+
+    <div class="workspace">
+
+        <aside class="geometry-sidebar">
+            <div class="input-group"><label>Customer Account</label><input type="text" value="Roasters Alliance Ltd">
+            </div>
+            <div class="input-group"><label>Product Name Reference</label><input type="text"
+                    value="Premium Arabica Matte Bag 250g"></div>
+
+            <div class="side-heading">Bag Geometric Blueprint</div>
+            <div class="input-group">
+                <label>Bag Form Variant</label>
+                <select>
+                    <option>Stand-up Pouch (SUP)</option>
+                    <option>Center Seal / Gusseted</option>
+                    <option>Three Side Seal</option>
+                </select>
+            </div>
+            <div class="field-row triple">
+                <div class="input-group"><label>Width (mm)</label><input type="number" value="150"></div>
+                <div class="input-group"><label>Length (mm)</label><input type="number" value="230"></div>
+                <div class="input-group"><label>Gusset (mm)</label><input type="number" value="40"></div>
+            </div>
+            <div class="field-row">
+                <div class="input-group"><label>Open Width (W)</label><input type="number" value="300"></div>
+                <div class="input-group"><label>Open Length (L)</label><input type="number" value="230"></div>
+            </div>
+
+            <div class="side-heading">Master Web Parameters</div>
+            <div class="field-row">
+                <div class="input-group"><label>Ups Across Web (WW)</label><input type="number" value="3"></div>
+                <div class="input-group"><label>Cylinder Pitch (mm)</label><input type="number" value="235"></div>
+            </div>
+            <div class="input-group"><label>Slit Target Width (mm)</label><input type="number" value="310"></div>
+        </aside>
+
+        <div class="flow-builder">
+
+            <div class="toolbox">
+                <span>Add Next Machine Sequence:</span>
+                <button class="add-btn b-roto" onclick="injectStation('roto')">+ Rotogravure Printing</button>
+                <button class="add-btn b-lam" onclick="injectStation('lam')">+ Adhesive Lamination</button>
+                <button class="add-btn b-ext" onclick="injectStation('ext')">+ Extrusion Coating</button>
+                <button class="add-btn b-slit" onclick="injectStation('slit')">+ Slitting Operation</button>
+                <button class="add-btn b-pouch" onclick="injectStation('pouch')">+ Pouch Converting</button>
+            </div>
+
+            <div class="canvas" id="assembly-canvas">
+
+                <div class="workcenter-card wc-roto" id="step-1">
+                    <div class="card-banner">
+                        <h3>Sequence #1: Rotogravure Printing (Face Film Construction)</h3>
+                        <span class="del-node" onclick="removeStation('step-1')">&times;</span>
+                    </div>
+                    <div class="card-payload">
+                        <div class="inline-grid">
+                            <div class="input-group"><label>Target Workcenter</label><select>
+                                    <option>Roto Machine - Line 01</option>
+                                    <option>Roto Machine - Line 04</option>
+                                </select></div>
+                            <div class="input-group"><label>Base Substrate</label><select>
+                                    <option>BOPP Plain Matte</option>
+                                    <option>PET Transparent</option>
+                                </select></div>
+                            <div class="input-group"><label>Film Gauge (µ)</label><input type="number" value="12"></div>
+                            <div class="input-group"><label>Density (g/cm³)</label><input type="number" value="0.96"
+                                    step="0.01"></div>
+                            <div class="input-group"><label>Input Roll Width (mm)</label><input type="number"
+                                    value="920"></div>
+                            <div class="input-group"><label>Target Speed (m/min)</label><input type="number"
+                                    value="220"></div>
+                        </div>
+
+                        <div class="asset-sub-grid">
+                            <div class="asset-title">Mechanical Cylinder Set & Color Artwork Assignment</div>
+                            <table class="sub-table">
+                                <thead>
+                                    <tr>
+                                        <th>Station Color No.</th>
+                                        <th>Artwork Component ID / Name</th>
+                                        <th>Engraving Cylinder ID Reference</th>
+                                        <th>Circumference (mm)</th>
+                                        <th>Target Ink Viscosity (Secs)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Station 1 (White Base)</td>
+                                        <td><input type="text" value="ART-COFFEE-092_White"></td>
+                                        <td><input type="text" value="CYL-235-920-W01"></td>
+                                        <td><input type="number" value="235"></td>
+                                        <td><input type="number" value="16"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Station 2 (Cyan Process)</td>
+                                        <td><input type="text" value="ART-COFFEE-092_Cyan"></td>
+                                        <td><input type="text" value="CYL-235-920-C02"></td>
+                                        <td><input type="number" value="235"></td>
+                                        <td><input type="number" value="18"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="line-arrow" id="arrow-1">▼</div>
+
+                <div class="workcenter-card wc-lam" id="step-2">
+                    <div class="card-banner">
+                        <h3>Sequence #2: Adhesive Lamination (Core Barrier Bind)</h3>
+                        <span class="del-node" onclick="removeStation('step-2')">&times;</span>
+                    </div>
+                    <div class="card-payload">
+                        <div class="inline-grid">
+                            <div class="input-group"><label>Target Workcenter</label><select>
+                                    <option>Nordmeccanica Simplex 02</option>
+                                </select></div>
+                            <div class="input-group"><label>Secondary Web Material</label><select>
+                                    <option>MET-PET (Barrier Film)</option>
+                                    <option>Alu Foil 7µ</option>
+                                </select></div>
+                            <div class="input-group"><label>Secondary Gauge (µ)</label><input type="number" value="12">
+                            </div>
+                            <div class="input-group"><label>Adhesive Chemistry Base</label><select>
+                                    <option>PU Solventless Two-Part</option>
+                                    <option>Solvent-Based Acrylic</option>
+                                </select></div>
+                            <div class="input-group"><label>Target Dry Coating (GSM)</label><input type="number"
+                                    value="2.5" step="0.1"></div>
+                        </div>
+
+                        <div class="asset-sub-grid">
+                            <div class="asset-title">Mechanical Roller & Chemical Mix Setting</div>
+                            <div class="inline-grid">
+                                <div class="input-group"><label>Mixer Ratio (Base:Hardener)</label><input type="text"
+                                        value="100 : 15"></div>
+                                <div class="input-group"><label>Application Roller ID</label><input type="text"
+                                        value="R-SLEEVE-920-A"></div>
+                                <div class="input-group"><label>Nip Pressure Setting (Bar)</label><input type="number"
+                                        value="4.2" step="0.1"></div>
+                                <div class="input-group"><label>Nip Temperature Target (°C)</label><input type="number"
+                                        value="65"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let counter = 2;
+
+        function injectStation(type) {
+            counter++;
+            const canvas = document.getElementById('assembly-canvas');
+
+            // Append directional process path indicator
+            const arrow = document.createElement('div');
+            arrow.className = 'line-arrow';
+            arrow.id = `arrow-${counter}`;
+            arrow.innerHTML = '▼';
+            canvas.appendChild(arrow);
+
+            // Establish outer configuration panel container block
+            const card = document.createElement('div');
+            card.className = `workcenter-card wc-${type}`;
+            card.id = `step-${counter}`;
+
+            let structureCode = '';
+
+            if (type === 'roto') {
+                structureCode = `
+                    <div class="card-banner"><h3>Sequence #${counter}: Rotogravure Printing Phase</h3><span class="del-node" onclick="removeStation('step-${counter}')">&times;</span></div>
+                    <div class="card-payload">
+                        <div class="inline-grid">
+                            <div class="input-group"><label>Workcenter</label><select><option>Roto Machine - Line 04</option></select></div>
+                            <div class="input-group"><label>Substrate Film</label><select><option>PET Transparent</option></select></div>
+                            <div class="input-group"><label>Gauge (µ)</label><input type="number" value="12"></div>
+                            <div class="input-group"><label>Target Speed (m/min)</label><input type="number" value="200"></div>
+                        </div>
+                    </div>`;
+            } else if (type === 'lam') {
+                structureCode = `
+                    <div class="card-banner"><h3>Sequence #${counter}: Adhesive Lamination Phase</h3><span class="del-node" onclick="removeStation('step-${counter}')">&times;</span></div>
+                    <div class="card-payload">
+                        <div class="inline-grid">
+                            <div class="input-group"><label>Workcenter</label><select><option>Nordmeccanica Simplex 02</option></select></div>
+                            <div class="input-group"><label>Secondary Web</label><select><option>Natural LDPE Sealant</option><option>Cast CPP</option></select></div>
+                            <div class="input-group"><label>Secondary Gauge (µ)</label><input type="number" value="50"></div>
+                            <div class="input-group"><label>Target Glue (GSM)</label><input type="number" value="2.2" step="0.1"></div>
+                        </div>
+                    </div>`;
+            } else if (type === 'ext') {
+                structureCode = `
+                    <div class="card-banner"><h3>Sequence #${counter}: Extrusion Coating / Sandwich Lamination</h3><span class="del-node" onclick="removeStation('step-${counter}')">&times;</span></div>
+                    <div class="card-payload">
+                        <div class="inline-grid">
+                            <div class="input-group"><label>Extruder Workcenter</label><select><option>Extrusion Line 03</option></select></div>
+                            <div class="input-group"><label>Resin Compound Poly</label><select><option>LDPE Coating Grade</option><option>PP Copolymer</option></select></div>
+                            <div class="input-group"><label>Melt Extrusion GSM</label><input type="number" value="15"></div>
+                            <div class="input-group"><label>Die Temperature Zone Max (°C)</label><input type="number" value="315"></div>
+                        </div>
+                    </div>`;
+            } else if (type === 'slit') {
+                structureCode = `
+                    <div class="card-banner"><h3>Sequence #${counter}: Slitting & Rewinding Matrix</h3><span class="del-node" onclick="removeStation('step-${counter}')">&times;</span></div>
+                    <div class="card-payload">
+                        <div class="inline-grid">
+                            <div class="input-group"><label>Slitter Workcenter</label><select><option>Kampf HighSpeed Slitter</option><option>Dusenbery Slitter</option></select></div>
+                            <div class="input-group"><label>Target Cut Output (mm)</label><input type="number" value="310"></div>
+                            <div class="input-group"><label>Rotary Knife Count</label><input type="number" value="3"></div>
+                            <div class="input-group"><label>Allowed Trim Waste (%)</label><input type="number" value="1.5" step="0.1"></div>
+                        </div>
+                    </div>`;
+            } else if (type === 'pouch') {
+                structureCode = `
+                    <div class="card-banner"><h3>Sequence #${counter}: Pouch Converting & Tooling Assembly</h3><span class="del-node" onclick="removeStation('step-${counter}')">&times;</span></div>
+                    <div class="card-payload">
+                        <div class="inline-grid">
+                            <div class="input-group"><label>Converting Line</label><select><option>Totani Pouch Line 01</option><option>Mamata Standard</option></select></div>
+                            <div class="input-group"><label>Zipper Track Model</label><select><option>Press-to-Close Standard</option><option>Slider Zipper</option><option>None</option></select></div>
+                            <div class="input-group"><label>Mechanical Die Punch</label><select><option>Euro-Slot Punch</option><option>D-Cut Handle</option></select></div>
+                            <div class="input-group"><label>Main Seal Jaw Temp (°C)</label><input type="number" value="180"></div>
+                        </div>
+                    </div>`;
+            }
+
+            card.innerHTML = structureCode;
+            canvas.appendChild(card);
+
+            // Bring panel node view dynamically to line focus
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function removeStation(stepId) {
+            const block = document.getElementById(stepId);
+            if (!block) return;
+            const marker = stepId.split('-')[1];
+            const correspondingArrow = document.getElementById(`arrow-${marker}`);
+
+            if (correspondingArrow) correspondingArrow.remove();
+            block.remove();
+        }
+    </script>
+</body>
+
+</html>

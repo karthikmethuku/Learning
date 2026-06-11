@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compact Flexible Packaging ERP</title>
+    <style>
+        :root {
+            --bg-main: #f1f2f6;
+            --bg-card: #ffffff;
+            --text-primary: #2f3640;
+            --text-secondary: #718093;
+            --border-color: #dcdde1;
+            --primary-color: #273c75;
+            --active-tab-color: #00a8ff;
+            --layer-1-color: #353b48;
+            --layer-2-color: #7f8c8d;
+            --layer-3-color: #95a5a6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* Prevent page scrolling completely to enforce single-viewport layout */
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 50px;
+        }
+
+        .header-title h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .header-title span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .badge {
+            background-color: #ffeaa7;
+            color: #d35400;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        button {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        button.btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        button.btn-secondary {
+            background-color: var(--border-color);
+            color: var(--text-primary);
+            margin-right: 5px;
+        }
+
+        /* --- CONTAINER --- */
+        .workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            /* Strict layout limits boundary lines */
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 280px;
+            background-color: #fff;
+            border-right: 1px solid var(--border-color);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar-section h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2px;
+        }
+
+        .layer-visual-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--bg-main);
+            padding: 3px;
+            border-radius: 4px;
+        }
+
+        .visual-layer {
+            text-align: center;
+            padding: 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .v-print {
+            background-color: var(--layer-1-color);
+        }
+
+        .v-glue {
+            background-color: #e84118;
+            padding: 2px;
+            font-size: 0.6rem;
+        }
+
+        .v-mid {
+            background-color: var(--layer-2-color);
+        }
+
+        .v-inner {
+            background-color: var(--layer-3-color);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .kpi-card {
+            background-color: var(--bg-main);
+            padding: 6px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .kpi-card .value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .kpi-card .unit {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- MAIN TABS WORK AREA --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* HORIZONTAL TABS MATRIX */
+        .tabs-nav {
+            display: flex;
+            background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 10px;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--active-tab-color);
+            background-color: #fff;
+        }
+
+        /* CONTAINER FOR PANELS */
+        .tab-panels {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            /* Scroll only internal panels if data overflows */
+        }
+
+        .tab-panel {
+            display: none;
+            /* Hidden by default */
+            height: 100%;
+        }
+
+        .tab-panel.active {
+            display: block;
+            /* Visible when active */
+        }
+
+        /* FORMS STRUCTURE */
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            height: 100%;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            background-color: #fafafa;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--active-tab-color);
+            background-color: #fff;
+        }
+
+        /* DATA MATRIX WORKSPACE */
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 0.75rem;
+        }
+
+        .matrix-table th {
+            background-color: var(--bg-main);
+            padding: 5px;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .matrix-table td {
+            border: 1px solid var(--border-color);
+            padding: 2px;
+        }
+
+        .matrix-table input {
+            border: none;
+            padding: 4px;
+            background: transparent;
+            width: 100%;
+        }
+
+        .layer-block {
+            border-left: 3px solid var(--primary-color);
+            background-color: #fcfcfc;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        .layer-block.interlocking {
+            border-left-color: #e84118;
+            background-color: #fff5f5;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+
+        .checkbox-group input {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-title">
+            <h1>Job Routing Sheet [JOB-2026-004]</h1>
+            <span>Client Master Configuration View</span>
+        </div>
+        <div>
+            <span class="badge" style="margin-right: 10px;">Draft Mode</span>
+            <button class="btn-secondary">Clone</button>
+            <button class="btn-primary">Push To Production</button>
+        </div>
+    </header>
+
+    <div class="workspace">
+
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Current Layer Stack</h3>
+                <div class="layer-visual-stack">
+                    <div class="visual-layer v-print">L1: 12µ BOPP (Print)</div>
+                    <div class="visual-layer v-glue">Adhesive (2.5 GSM)</div>
+                    <div class="visual-layer v-mid">L2: 12µ MET-PET</div>
+                    <div class="visual-layer v-glue">Adhesive (2.5 GSM)</div>
+                    <div class="visual-layer v-inner">L3: 50µ LDPE</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Live Web Totals</h3>
+                <div class="kpi-grid">
+                    <div class="kpi-card"><label style="font-size: 0.65rem;">Total Microns</label>
+                        <div class="value">74.0</div>
+                    </div>
+                    <div class="kpi-card"><label style="font-size: 0.65rem;">Total GSM</label>
+                        <div class="value">68.2</div>
+                    </div>
+                    <div class="kpi-card"><label style="font-size: 0.65rem;">Pcs per KG</label>
+                        <div class="value">119</div>
+                    </div>
+                    <div class="kpi-card"><label style="font-size: 0.65rem;">Grams/Pouch</label>
+                        <div class="value">8.40</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-content">
+            <nav class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab-metadata')">1. Job Info & Target</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-geometry')">2. Geometry & Web Layout</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-materials')">3. Layer Composition (BOM)</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-routing')">4. Finishing & Downstream</button>
+            </nav>
+
+            <div class="tab-panels">
+
+                <div id="tab-metadata" class="tab-panel active">
+                    <div class="form-card">
+                        <h3 style="font-size:0.9rem; margin-bottom:10px; color:var(--primary-color);">Master Metadata
+                            Definition</h3>
+                        <div class="grid-2">
+                            <div class="form-group"><label>Product ID</label><input type="text" value="PROD-COFFEE-092">
+                            </div>
+                            <div class="form-group"><label>Product Name</label><input type="text"
+                                    value="Premium Arabica Matte Pouch 250g"></div>
+                            <div class="form-group"><label>Customer Account</label><select>
+                                    <option>Roasters Alliance Ltd</option>
+                                </select></div>
+                            <div class="form-group"><label>Target Run Qty (Pcs)</label><input type="number"
+                                    value="50000"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-geometry" class="tab-panel">
+                    <div class="form-card">
+                        <h3 style="font-size:0.9rem; margin-bottom:10px; color:var(--primary-color);">Dimensional
+                            Calculations</h3>
+                        <div class="grid-3" style="margin-bottom: 15px;">
+                            <div class="form-group"><label>Closed Width (mm)</label><input type="number" value="150">
+                            </div>
+                            <div class="form-group"><label>Closed Length (mm)</label><input type="number" value="230">
+                            </div>
+                            <div class="form-group"><label>Gusset Layer (mm)</label><input type="number" value="40">
+                            </div>
+                        </div>
+                        <div class="grid-3">
+                            <div class="form-group"><label>Open Width (W)</label><input type="number" value="300"></div>
+                            <div class="form-group"><label>Open Length (L)</label><input type="number" value="230">
+                            </div>
+                            <div class="form-group"><label>Ups from Web Width (WW)</label><input type="number"
+                                    value="3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-materials" class="tab-panel">
+                    <div class="form-card" style="overflow-y: auto;">
+                        <h3 style="font-size:0.9rem; margin-bottom:10px; color:var(--primary-color);">Multi-Layer Setup
+                        </h3>
+
+                        <div class="layer-block">
+                            <span style="font-size:0.75rem; font-weight:bold; color:var(--layer-1-color);">Layer 1: Face
+                                Printing Film</span>
+                            <table class="matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Material</th>
+                                        <th>Thick(µ)</th>
+                                        <th>Density</th>
+                                        <th>W(mm)</th>
+                                        <th>L(mm)</th>
+                                        <th>Weight(Kg)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><select>
+                                                <option>BOPP Matte</option>
+                                            </select></td>
+                                        <td><input type="number" value="12"></td>
+                                        <td><input type="number" value="0.96"></td>
+                                        <td><input type="number" value="210"></td>
+                                        <td><input type="number" value="210"></td>
+                                        <td><input type="number" value="0.508" readonly></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="layer-block interlocking">
+                            <span style="font-size:0.72rem; font-weight:bold; color:#e84118;">Lamination Link: Layer 1 ➔
+                                2</span>
+                            <div class="grid-3" style="margin-top:4px;">
+                                <div class="form-group"><label>Adhesive Base</label><select>
+                                        <option>PU Glue</option>
+                                    </select></div>
+                                <div class="form-group"><label>Target GSM</label><input type="number" value="2.5"
+                                        step="0.1"></div>
+                                <div class="form-group"><label>Mix Ratio</label><input type="text" value="100:15"></div>
+                            </div>
+                        </div>
+
+                        <div class="layer-block" style="border-left-color: var(--layer-2-color);">
+                            <span style="font-size:0.75rem; font-weight:bold; color:var(--layer-2-color);">Layer 2:
+                                Barrier Foil Core</span>
+                            <table class="matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Material</th>
+                                        <th>Thick(µ)</th>
+                                        <th>Density</th>
+                                        <th>W(mm)</th>
+                                        <th>L(mm)</th>
+                                        <th>Weight(Kg)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><select>
+                                                <option>MET-PET</option>
+                                            </select></td>
+                                        <td><input type="number" value="12"></td>
+                                        <td><input type="number" value="1.40"></td>
+                                        <td><input type="number" value="210"></td>
+                                        <td><input type="number" value="210"></td>
+                                        <td><input type="number" value="0.741" readonly></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-routing" class="tab-panel">
+                    <div class="form-card">
+                        <h3 style="font-size:0.9rem; margin-bottom:10px; color:var(--primary-color);">Downstream
+                            Operational Parameters</h3>
+                        <div class="grid-3">
+                            <div style="background:var(--bg-main); padding:8px; border-radius:4px;">
+                                <label class="checkbox-group"><input type="checkbox"
+                                        checked><strong>Inspection</strong></label>
+                                <div class="form-group" style="margin-top:5px;"><label>Max Breaks</label><input
+                                        type="number" value="2"></div>
+                            </div>
+                            <div style="background:var(--bg-main); padding:8px; border-radius:4px;">
+                                <label class="checkbox-group"><input type="checkbox" checked><strong>Slitting
+                                        Matrix</strong></label>
+                                <div class="form-group" style="margin-top:5px;"><label>Trim Waste %</label><input
+                                        type="number" value="1.5" step="0.1"></div>
+                            </div>
+                            <div style="background:var(--bg-main); padding:8px; border-radius:4px;">
+                                <label class="checkbox-group"><input type="checkbox" checked><strong>Pouch
+                                        Converting</strong></label>
+                                <div class="form-group" style="margin-top:5px;"><label>Zipper Type</label><select>
+                                        <option>Press-to-Close</option>
+                                    </select></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(event, tabId) {
+            // Hide all tab panels
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            // Deactivate all navigational tabs
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Activate specific panel and button combination
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

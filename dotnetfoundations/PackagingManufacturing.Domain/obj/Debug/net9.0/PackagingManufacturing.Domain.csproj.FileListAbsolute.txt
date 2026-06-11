@@ -1,0 +1,12 @@
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/bin/Debug/net9.0/PackagingManufacturing.Domain.deps.json
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/bin/Debug/net9.0/PackagingManufacturing.Domain.dll
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/bin/Debug/net9.0/PackagingManufacturing.Domain.pdb
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/PackagingManufacturing.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/PackagingManufacturing.Domain.AssemblyInfoInputs.cache
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/PackagingManufacturing.Domain.AssemblyInfo.cs
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/PackagingManufacturing.Domain.csproj.CoreCompileInputs.cache
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/PackagingManufacturing.Domain.sourcelink.json
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/PackagingManufacturing.Domain.dll
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/refint/PackagingManufacturing.Domain.dll
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/PackagingManufacturing.Domain.pdb
+/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Domain/obj/Debug/net9.0/ref/PackagingManufacturing.Domain.dll

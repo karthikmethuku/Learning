@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "2dP4+lBwmdU=",
+  "success": true,
+  "projectFilePath": "/Users/kmeth/Repo/Learning/dotnetfoundations/PackagingManufacturing.Application/PackagingManufacturing.Application.csproj",
+  "expectedPackageFiles": [
+    "/Users/kmeth/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.5/microsoft.extensions.dependencyinjection.abstractions.9.0.5.nupkg.sha512",
+    "/Users/kmeth/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.15/microsoft.aspnetcore.app.ref.9.0.15.nupkg.sha512",
+    "/Users/kmeth/.nuget/packages/microsoft.netcore.app.ref/9.0.15/microsoft.netcore.app.ref.9.0.15.nupkg.sha512"
+  ],
+  "logs": []
+}

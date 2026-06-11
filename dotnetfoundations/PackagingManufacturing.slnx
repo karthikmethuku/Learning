@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PackagingManufacturing.API/PackagingManufacturing.API.csproj" />
+  <Project Path="PackagingManufacturing.Application/PackagingManufacturing.Application.csproj" />
+  <Project Path="PackagingManufacturing.Domain/PackagingManufacturing.Domain.csproj" />
+  <Project Path="PackagingManufacturing.Infrastructure/PackagingManufacturing.Infrastructure.csproj" />
+</Solution>
